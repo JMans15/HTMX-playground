@@ -56,8 +56,10 @@ pub async fn index(_req: HttpRequest) -> HttpResponse {
 pub async fn loading_text(_req: HttpRequest) -> HttpResponse {
     let html = leptos::ssr::render_to_string(move |cx| {
         view! { cx,
-            <div hx-get="/img" hx-trigger="load">
-                <button class="btn">Lazy Loading Image</button>
+            <div id="parent-div">
+            <div id="placeholder" style="width: 800; height: 450; background-color: #999999" hx-trigger="load" hx-get="/img" hx-swap="innerHTML"/><br/>
+            <text> Image lazy loading without page being refreshed </text><br/><br/>
+            <button class="btn" hx-get="/default" hx-trigger="click" hx-target="#parent-div"> Reset </button>
             </div>
         }
     });
@@ -83,11 +85,7 @@ pub async fn default_view(_req: HttpRequest) -> HttpResponse {
 pub async fn load_image(_req: HttpRequest) -> HttpResponse {
     let html = leptos::ssr::render_to_string(move |cx| {
         view! { cx,
-            <div id="parent-div">
-            <img id="myimage" src="./static/image.png" width=800/><br/><br/>
-            <text> Image lazy loaded without page being refreshed </text><br/><br/>
-            <button class="btn" hx-get="/default" hx-trigger="click" hx-target="#parent-div"> Reset </button>
-            </div>
+            <img id="myimage" src="./static/image.png" width=800 height=450/><br/><br/>
         }
     });
 
